@@ -1,0 +1,35 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Category {
+  id        String   @id @default(uuid())
+  name      String   @unique
+  imageUrl  String?
+  products  Product[]
+}
+
+model Product {
+  id          String   @id @default(uuid())
+  name        String
+  price       Float
+  description String
+  imageUrl    String?
+  status      ProductStatus @default(PENDING)
+  sellerId    String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  categoryId String?
+  category   Category? @relation(fields: [categoryId], references: [id])
+}
+
+enum ProductStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
