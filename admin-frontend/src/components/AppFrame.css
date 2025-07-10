@@ -1,0 +1,14 @@
+/* AppFrame.css */
+
+.appframe-main {
+  padding-top: 80px;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  min-height: 100vh;
+  background-color: #f7f8fa;
+  transition: margin-left 0.3s ease;
+}
+
+.appframe-content {
+  transition: box-shadow 0.3s ease;
+}

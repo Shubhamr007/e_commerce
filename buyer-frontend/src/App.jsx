@@ -164,7 +164,15 @@ function App() {
   };
 
   const handleViewDetails = (productId) => {
-    window.location.href = `/product/${productId}`;
+    window.open(`/product/${productId}`, '_blank', 'noopener,noreferrer');
+  };
+
+  const handleOpenCart = () => {
+    window.open('/cart', '_blank', 'noopener,noreferrer');
+  };
+
+  const handleOpenCheckout = () => {
+    window.open('/checkout', '_blank', 'noopener,noreferrer');
   };
 
   return (
@@ -176,6 +184,7 @@ function App() {
         onLoginClick={() => { setAuthMode('login'); setShowAuthDialog(true); }}
         onRegisterClick={() => { setAuthMode('register'); setShowAuthDialog(true); }}
         onUserClick={() => setShowUserDialog(true)}
+        onCartClick={handleOpenCart}
       />
       {/* User Info Dialog (shows user info and login/register if not logged in) */}
       <UserMenuDialog

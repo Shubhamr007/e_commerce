@@ -152,6 +152,16 @@ app.get('/products/moderation', auth('ADMIN'), async (req, res) => {
   }
 });
 
+// Admin: Get all products (any status)
+app.get('/admin/products', auth('ADMIN'), async (req, res) => {
+  try {
+    const products = await prisma.product.findMany();
+    res.json(products);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // Get product by ID (only if approved)
 app.get('/products/:id', async (req, res) => {
   const product = await prisma.product.findUnique({ where: { id: req.params.id } });

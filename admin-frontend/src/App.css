@@ -1,42 +1,159 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+/* === Global Reset & Base Styles === */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  height: 100%;
+  font-family: 'Inter', 'Roboto', 'Segoe UI', sans-serif;
+  background-color: #f7f8fa;
+  color: #1a1a1a;
+  line-height: 1.5;
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* === Scrollbar Styling === */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.15);
+  border-radius: 8px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(0, 0, 0, 0.25);
+}
+
+::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+/* === Typography Enhancements === */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 600;
+  color: #1f2937;
+}
+
+p {
+  color: #4b5563;
+  margin-bottom: 0.5rem;
+}
+
+a {
+  color: #2563eb;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* === Form Element Reset === */
+input, button, textarea, select {
+  font-family: inherit;
+  font-size: 1rem;
+  outline: none;
+  border: none;
+  background: none;
+}
+
+/* === Utility Classes === */
+.text-center {
   text-align: center;
 }
-
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
+.text-right {
+  text-align: right;
 }
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+.text-muted {
+  color: #6b7280;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
+.mb-1 { margin-bottom: 0.25rem; }
+.mb-2 { margin-bottom: 0.5rem; }
+.mb-3 { margin-bottom: 1rem; }
+.mt-1 { margin-top: 0.25rem; }
+.mt-2 { margin-top: 0.5rem; }
+.mt-3 { margin-top: 1rem; }
+.p-2  { padding: 0.5rem; }
+.p-3  { padding: 1rem; }
+
+.card-shadow {
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  border-radius: 12px;
+  background: #fff;
+  transition: 0.3s ease;
+}
+
+.card-shadow:hover {
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+}
+
+/* === Button Custom Look (Optional) === */
+.btn-primary {
+  background-color: #2563eb;
+  color: white;
+  padding: 0.5rem 1.2rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.2s ease;
+}
+
+.btn-primary:hover {
+  background-color: #1d4ed8;
+}
+
+/* === MUI Dialog & Modal Tweaks === */
+.MuiDialog-paper {
+  border-radius: 12px !important;
+  padding: 1rem;
+}
+
+/* === MUI Table Responsive === */
+.responsive-table {
+  overflow-x: auto;
+  width: 100%;
+}
+
+/* === Status/Tag Colors === */
+.tag-success {
+  color: #059669;
+  background: #d1fae5;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+}
+
+.tag-warning {
+  color: #b45309;
+  background: #fef3c7;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+}
+
+.tag-error {
+  color: #dc2626;
+  background: #fee2e2;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+}
+
+/* === Mobile Adjustments === */
+@media (max-width: 768px) {
+  .card-shadow {
+    padding: 0.75rem;
   }
-  to {
-    transform: rotate(360deg);
+
+  .btn-primary {
+    width: 100%;
+    padding: 0.75rem;
   }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
-}
-
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
 }

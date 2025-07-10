@@ -33,7 +33,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   paddingLeft: `calc(1em + ${theme.spacing(4)})`,
 }));
 
-export default function Header({ user, onLogout, cartCount, onLoginClick, onRegisterClick, onUserClick }) {
+export default function Header({ user, onLogout, cartCount, onLoginClick, onRegisterClick, onUserClick, onCartClick }) {
   const initials = user?.name
     ? user.name.split(' ').map((n) => n[0]).join('').toUpperCase()
     : user?.email?.[0]?.toUpperCase() || 'U';
@@ -59,7 +59,7 @@ export default function Header({ user, onLogout, cartCount, onLoginClick, onRegi
 
         {/* Cart + Avatar */}
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-          <IconButton aria-label="cart" onClick={() => window.location.href = '/cart'}>
+          <IconButton aria-label="cart" onClick={onCartClick}>
             <Badge badgeContent={cartCount} color="primary">
               <ShoppingCartIcon />
             </Badge>

@@ -78,5 +78,13 @@ app.get('/users', auth('ADMIN'), async (req, res) => {
   }
 });
 
+// Modular route for dashboard endpoints
+const dashboardRoutes = require('./routes/dashboard');
+app.use('/api/admin/dashboard', dashboardRoutes);
+
+// Error handler middleware (should be last)
+const errorHandler = require('./middleware/errorHandler');
+app.use(errorHandler);
+
 const PORT = process.env.PORT || 4102;
 app.listen(PORT, () => console.log(`Admin backend running on port ${PORT}`));

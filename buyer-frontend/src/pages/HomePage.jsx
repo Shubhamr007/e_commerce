@@ -1,28 +1,18 @@
-import CategoryCarousel from '../components/CategoryCarousel';
-import ProductCard from '../components/ProductCard';
-import SearchBar from '../components/SearchBar';
+import HeroSection from '../sections/HeroSection';
+import BrandsSection from '../sections/BrandsSection';
+import CategorySection from '../sections/CategorySection';
+import HotDealsSection from '../sections/HotDealsSection';
+import FeaturedSection from '../sections/FeaturedSection';
 
-export default function HomePage({ products, onAddToCart, onViewDetails }) {
+export default function HomePage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-pink-100 to-indigo-100 flex flex-col items-center">
-      <div className="w-full max-w-5xl px-4 py-8">
-        <SearchBar />
-        <CategoryCarousel />
-        <h2 className="text-2xl font-bold mt-8 mb-4 text-pink-700">Featured Products</h2>
-        <div className="flex flex-wrap justify-center gap-4">
-          {products && products.length > 0 ? (
-            products.map(product => (
-              <ProductCard
-                key={product.id}
-                product={product}
-                onAddToCart={onAddToCart}
-                onViewDetails={onViewDetails}
-              />
-            ))
-          ) : (
-            <div className="text-gray-400">No products found.</div>
-          )}
-        </div>
+      <div className="w-full max-w-6xl px-2 md:px-4 py-6 md:py-10">
+        <HeroSection />
+        <BrandsSection />
+        <CategorySection />
+        <HotDealsSection />
+        <FeaturedSection />
       </div>
     </div>
   );
