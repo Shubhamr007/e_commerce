@@ -3,6 +3,7 @@
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
+  padding-top: 80px; /* Add top padding to prevent content hidden under header */
 }
 
 .logo {

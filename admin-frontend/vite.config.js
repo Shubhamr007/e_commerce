@@ -8,7 +8,8 @@ export default defineConfig({
     proxy: {
       '/api': 'http://localhost:4102',
       '/users': 'http://localhost:4102',
-      '/products': 'http://localhost:4102'
+      '/products': 'http://localhost:4102',
+      '/orders': 'http://localhost:4102', // Added proxy for orders endpoint
     }
   }
 })

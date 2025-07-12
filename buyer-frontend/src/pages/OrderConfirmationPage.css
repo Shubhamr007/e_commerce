@@ -1,0 +1,33 @@
+.order-confirmation-main {
+  padding-top: 80px;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.order-confirmation-card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  padding: 2rem;
+  margin-top: 2rem;
+}
+
+.order-confirmation-title {
+  color: #15803d;
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+.order-confirmation-btn {
+  padding: 0.5rem 1rem;
+  background: #2563eb;
+  color: #fff;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  margin-top: 1rem;
+}
+.order-confirmation-btn:hover {
+  background: #1d4ed8;
+}

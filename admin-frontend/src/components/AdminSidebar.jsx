@@ -41,7 +41,7 @@ const navGroups = [
   },
 ];
 
-export default function AdminSidebar({ selectedPage, onSelectPage, collapsed, onToggleCollapse }) {
+export default function AdminSidebar({ selectedPage, onSelectPage = () => {}, collapsed, onToggleCollapse }) {
   const [openGroups, setOpenGroups] = useState({});
 
   const handleGroupClick = (label) => {

@@ -3,7 +3,7 @@ import { Box, Tabs, Tab, CircularProgress, Alert } from '@mui/material';
 import useApiResource from './useApiResource';
 import AdminProductsTable from './AdminProductsTable';
 import ProductDetailDialog from './ProductDetailDialog';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../context/AuthContext.jsx';
 
 const PRODUCT_STATUSES = [
   { label: 'Pending', value: 'PENDING' },

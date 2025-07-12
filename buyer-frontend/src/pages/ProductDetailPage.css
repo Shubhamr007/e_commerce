@@ -1,0 +1,20 @@
+.product-detail-main {
+  padding-top: 80px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.product-detail-card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  padding: 2rem;
+  margin-top: 2rem;
+}
+
+.product-description {
+  margin-top: 1.5rem;
+  font-size: 1rem;
+  color: #444;
+  line-height: 1.6;
+}

@@ -4,7 +4,7 @@ import useApiResource from './useApiResource';
 import UserDetailDialog from './UserDetailDialog';
 import { approveUser, rejectUser } from '../services/apiService';
 import { SellerDetailDialog, BuyerDetailDialog } from './user';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../context/AuthContext.jsx';
 
 const USER_ROLES = [
   { label: 'Admins', value: 'ADMIN' },

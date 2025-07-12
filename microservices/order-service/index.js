@@ -1,41 +1,44 @@
+// =========================
+// ✅ ORDER SERVICE (PORT 4002)
+// =========================
+
 const express = require('express');
 const cors = require('cors');
 const axios = require('axios');
+const jwt = require('jsonwebtoken');
 const app = express();
 const PORT = process.env.PORT || 4002;
+const JWT_SECRET = process.env.JWT_SECRET || 'supersecretkey';
 
 app.use(cors());
 app.use(express.json());
 
-// In-memory order store
 let orders = [];
 let orderId = 1;
 
-// Get all orders
+function authSeller(req, res, next) {
+  const authHeader = req.headers.authorization;
+  if (!authHeader) return res.status(401).json({ error: 'No token' });
+  const token = authHeader.split(' ')[1];
+  try {
+    const payload = jwt.verify(token, JWT_SECRET);
+    if (payload.role !== 'SELLER') return res.status(403).json({ error: 'Forbidden' });
+    req.sellerId = payload.userId;
+    next();
+  } catch {
+    res.status(401).json({ error: 'Invalid token' });
+  }
+}
+
 app.get('/orders', (req, res) => {
   res.json(orders);
 });
 
-// Get order by ID
-app.get('/orders/:id', (req, res) => {
-  const order = orders.find(o => o.id === parseInt(req.params.id));
-  if (!order) return res.status(404).json({ error: 'Order not found' });
-  res.json(order);
-});
-
-// Create a new order
 app.post('/orders', async (req, res) => {
-  const { buyerId, items, address, location } = req.body; // items: [{ productId, quantity }]
-  if (!Array.isArray(items) || items.length === 0) {
-    return res.status(400).json({ error: 'Order must contain at least one item.' });
+  const { buyerId, items, address, location } = req.body;
+  if (!Array.isArray(items) || items.length === 0 || !buyerId || !address) {
+    return res.status(400).json({ error: 'Invalid order data' });
   }
-  if (!buyerId) {
-    return res.status(400).json({ error: 'buyerId is required.' });
-  }
-  if (!address) {
-    return res.status(400).json({ error: 'address is required.' });
-  }
-  // Optionally validate location
   try {
     const productRes = await axios.get('http://localhost:4001/products');
     const products = productRes.data;
@@ -48,7 +51,8 @@ app.post('/orders', async (req, res) => {
         productId: product.id,
         name: product.name,
         price: product.price,
-        quantity: item.quantity
+        quantity: item.quantity,
+        sellerId: product.sellerId
       };
     });
     const newOrder = {
@@ -64,33 +68,20 @@ app.post('/orders', async (req, res) => {
     };
     orders.push(newOrder);
     res.status(201).json(newOrder);
-
-    // Notify admin and sellers
-    try {
-      // Notify admin (assuming admin userId is 'admin')
-      await axios.post('http://localhost:4005/notifications', {
-        userId: 'admin',
-        type: 'order',
-        message: `New order placed: #${newOrder.id}`,
-        meta: { orderId: newOrder.id }
-      });
-      // Notify each seller (collect unique sellerIds from items)
-      const sellerIds = [...new Set(orderItems.map(item => item.sellerId).filter(Boolean))];
-      for (const sellerId of sellerIds) {
-        await axios.post('http://localhost:4005/notifications', {
-          userId: sellerId,
-          type: 'order',
-          message: `You have a new order for your product(s) in order #${newOrder.id}`,
-          meta: { orderId: newOrder.id }
-        });
-      }
-    } catch (notifyErr) {
-      // Log but do not block order creation
-      console.error('Notification error:', notifyErr.message);
-    }
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
+});
+
+app.get('/orders/seller', authSeller, (req, res) => {
+  const sellerId = req.sellerId;
+  const sellerOrders = orders
+    .filter(order => order.items.some(item => item.sellerId === sellerId))
+    .map(order => ({
+      ...order,
+      items: order.items.filter(item => item.sellerId === sellerId)
+    }));
+  res.json(sellerOrders);
 });
 
 app.listen(PORT, () => {

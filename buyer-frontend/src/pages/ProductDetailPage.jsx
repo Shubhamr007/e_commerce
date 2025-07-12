@@ -12,6 +12,7 @@ import {
   CircularProgress,
   Rating,
 } from '@mui/material';
+import './ProductDetailPage.css';
 
 export default function ProductDetailPage({ onAddToCart }) {
   const { id } = useParams();

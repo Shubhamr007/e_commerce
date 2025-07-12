@@ -3,7 +3,7 @@ import { Box, CircularProgress, Alert } from '@mui/material';
 import AdminOrdersTable from './AdminOrdersTable';
 import OrderDetailDialog from './OrderDetailDialog';
 import useApiResource from './useApiResource';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../context/AuthContext.jsx';
 
 export default function AdminOrdersManager() {
   const [detailOpen, setDetailOpen] = useState(false);

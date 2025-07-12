@@ -11,6 +11,7 @@ app.use(express.json());
 const JWT_SECRET = process.env.JWT_SECRET || 'supersecretkey';
 const PRODUCT_SERVICE_URL = process.env.PRODUCT_SERVICE_URL || 'http://localhost:4001';
 const USER_SERVICE_URL = process.env.USER_SERVICE_URL || 'http://localhost:4004';
+const ORDER_SERVICE_URL = process.env.ORDER_SERVICE_URL || 'http://localhost:4002';
 
 function auth(requiredRole) {
   return (req, res, next) => {
@@ -87,6 +88,18 @@ app.post('/products/:id/reject', auth('ADMIN'), async (req, res) => {
 app.get('/users', auth('ADMIN'), async (req, res) => {
   try {
     const { data } = await axios.get(`${USER_SERVICE_URL}/users`, {
+      headers: { Authorization: req.headers.authorization },
+    });
+    res.json(data);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Admin: List all orders
+app.get('/orders', auth('ADMIN'), async (req, res) => {
+  try {
+    const { data } = await axios.get(`${ORDER_SERVICE_URL}/orders`, {
       headers: { Authorization: req.headers.authorization },
     });
     res.json(data);

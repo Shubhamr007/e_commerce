@@ -5,7 +5,7 @@ import AdminDashboardPage from './pages/AdminDashboardPage';
 import AdminProductsPage from './pages/AdminProductsPage';
 import AdminUsersPage from './pages/AdminUsersPage';
 import AdminChangePasswordDialog from './components/AdminChangePasswordDialog';
-import { AuthProvider, useAuth } from './context/AuthContext';
+import { AuthProvider, useAuth } from './context/AuthContext.jsx';
 import AppFrame from './components/AppFrame';
 import { jwtDecode } from 'jwt-decode'; // Optional: for token expiry
 import ErrorBoundary from './components/ErrorBoundary';
