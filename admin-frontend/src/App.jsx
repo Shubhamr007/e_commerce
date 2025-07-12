@@ -10,6 +10,7 @@ import AppFrame from './components/AppFrame';
 import { jwtDecode } from 'jwt-decode'; // Optional: for token expiry
 import ErrorBoundary from './components/ErrorBoundary';
 import ComingSoon from './pages/ComingSoon';
+import AdminOrdersPage from './pages/AdminOrdersPage';
 
 function AppContent() {
   const { user, token, lastLogin, loading, error, login, logout } = useAuth();
@@ -61,8 +62,9 @@ function AppContent() {
         {selectedPage === 'dashboard' && <AdminDashboardPage metrics={{}} activities={[]} />}
         {selectedPage === 'products' && <AdminProductsPage />}
         {selectedPage === 'users' && <AdminUsersPage />}
+        {selectedPage === 'orders' && <AdminOrdersPage />}
         {/* Show ComingSoon for any not-yet-developed page */}
-        {['orders', 'reports', 'settings'].includes(selectedPage) && (
+        {['reports', 'settings'].includes(selectedPage) && (
           <ComingSoon message={`The "${selectedPage.charAt(0).toUpperCase() + selectedPage.slice(1)}" page is under development.`} />
         )}
       </AppFrame>

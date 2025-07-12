@@ -7,6 +7,7 @@ import SellerProductsPage from './components/SellerProductsPage';
 import SellerOrdersPage from './components/SellerOrdersPage';
 import SellerNotificationsPage from './components/SellerNotificationsPage';
 import SellerAnalyticsPage from './components/SellerAnalyticsPage';
+import SellerNotificationsBell from './components/SellerNotificationsBell';
 import { Box, Toolbar, AppBar, Typography, IconButton } from '@mui/material';
 import LogoutIcon from '@mui/icons-material/Logout';
 
@@ -157,6 +158,7 @@ function App() {
             <Typography variant="body1" sx={{ mr: 2 }}>
               {name}
             </Typography>
+            <SellerNotificationsBell sellerId={token ? JSON.parse(atob(token.split('.')[1])).userId : ''} />
             <IconButton color="inherit" onClick={handleLogout}>
               <LogoutIcon />
             </IconButton>

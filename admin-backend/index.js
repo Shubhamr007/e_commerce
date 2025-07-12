@@ -30,13 +30,30 @@ function auth(requiredRole) {
   };
 }
 
-// Admin: List all products (all statuses)
+// Admin: List all products (all statuses) with seller info
 app.get('/products', auth('ADMIN'), async (req, res) => {
   try {
-    const { data } = await axios.get(`${PRODUCT_SERVICE_URL}/admin/products`, {
+    // Fetch products from product-service
+    const { data: products } = await axios.get(`${PRODUCT_SERVICE_URL}/admin/products`, {
       headers: { Authorization: req.headers.authorization },
     });
-    res.json(data);
+    // Fetch all users from user-service
+    const { data: users } = await axios.get(`${USER_SERVICE_URL}/users`, {
+      headers: { Authorization: req.headers.authorization },
+    });
+    // Map seller info into products
+    const userMap = {};
+    users.forEach(u => { userMap[u.id] = u; });
+    const enriched = products.map(p => {
+      const seller = userMap[p.sellerId] || {};
+      return {
+        ...p,
+        sellerName: seller.name || seller.email || p.sellerId,
+        sellerEmail: seller.email || '',
+        sellerId: p.sellerId,
+      };
+    });
+    res.json(enriched);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

@@ -25,12 +25,17 @@ app.get('/orders/:id', (req, res) => {
 
 // Create a new order
 app.post('/orders', async (req, res) => {
-  const { items } = req.body; // items: [{ productId, quantity }]
+  const { buyerId, items, address, location } = req.body; // items: [{ productId, quantity }]
   if (!Array.isArray(items) || items.length === 0) {
     return res.status(400).json({ error: 'Order must contain at least one item.' });
   }
-
-  // Fetch product details from Product Service
+  if (!buyerId) {
+    return res.status(400).json({ error: 'buyerId is required.' });
+  }
+  if (!address) {
+    return res.status(400).json({ error: 'address is required.' });
+  }
+  // Optionally validate location
   try {
     const productRes = await axios.get('http://localhost:4001/products');
     const products = productRes.data;
@@ -48,12 +53,41 @@ app.post('/orders', async (req, res) => {
     });
     const newOrder = {
       id: orderId++,
+      buyerId,
       items: orderItems,
+      address,
+      location,
       total,
-      createdAt: new Date().toISOString()
+      status: 'pending',
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
     };
     orders.push(newOrder);
     res.status(201).json(newOrder);
+
+    // Notify admin and sellers
+    try {
+      // Notify admin (assuming admin userId is 'admin')
+      await axios.post('http://localhost:4005/notifications', {
+        userId: 'admin',
+        type: 'order',
+        message: `New order placed: #${newOrder.id}`,
+        meta: { orderId: newOrder.id }
+      });
+      // Notify each seller (collect unique sellerIds from items)
+      const sellerIds = [...new Set(orderItems.map(item => item.sellerId).filter(Boolean))];
+      for (const sellerId of sellerIds) {
+        await axios.post('http://localhost:4005/notifications', {
+          userId: sellerId,
+          type: 'order',
+          message: `You have a new order for your product(s) in order #${newOrder.id}`,
+          meta: { orderId: newOrder.id }
+        });
+      }
+    } catch (notifyErr) {
+      // Log but do not block order creation
+      console.error('Notification error:', notifyErr.message);
+    }
   } catch (err) {
     res.status(400).json({ error: err.message });
   }

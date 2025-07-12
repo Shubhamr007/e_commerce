@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Routes, Route, useNavigate } from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import ProductDetailPage from './pages/ProductDetailPage';
 import SearchPage from './pages/SearchPage';
@@ -7,6 +7,9 @@ import CategoryPage from './pages/CategoryPage';
 import Header from './components/Header';
 import UserMenuDialog from './components/UserMenuDialog';
 import CartPage from './pages/CartPage';
+import OrderStatusPage from './pages/OrderStatusPage';
+import AddressPage from './pages/AddressPage';
+import CheckoutPage from './pages/CheckoutPage';
 
 function App() {
   const [products, setProducts] = useState([]);
@@ -22,6 +25,7 @@ function App() {
   const [authMode, setAuthMode] = useState('login'); // or 'register'
   // Add state to control user info dialog
   const [showUserDialog, setShowUserDialog] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetch('http://localhost:4103/products', {
@@ -172,7 +176,7 @@ function App() {
   };
 
   const handleOpenCheckout = () => {
-    window.open('/checkout', '_blank', 'noopener,noreferrer');
+    navigate('/checkout');
   };
 
   return (
@@ -214,16 +218,18 @@ function App() {
           </form>
         </div>
       )}
-      <Router>
-        <Routes>
-          <Route path="/" element={<HomePage products={products} onAddToCart={handleAddToCart} onViewDetails={handleViewDetails} />} />
-          <Route path="/product/:id" element={<ProductDetailPage onAddToCart={handleAddToCart} />} />
-          <Route path="/search" element={<SearchPage />} />
-          <Route path="/category/:id" element={<CategoryPage />} />
-          <Route path="/cart" element={<CartPage cart={cart} onRemove={handleRemoveFromCart} onQuantityChange={handleQuantityChange} onCheckout={handleCheckout} />} />
-          {/* TODO: Add more routes as needed */}
-        </Routes>
-      </Router>
+      {/* Remove <Router> wrapper here, keep only <Routes> */}
+      <Routes>
+        <Route path="/" element={<HomePage products={products} onAddToCart={handleAddToCart} onViewDetails={handleViewDetails} />} />
+        <Route path="/product/:id" element={<ProductDetailPage onAddToCart={handleAddToCart} />} />
+        <Route path="/search" element={<SearchPage />} />
+        <Route path="/category/:id" element={<CategoryPage />} />
+        <Route path="/cart" element={<CartPage cart={cart} onRemove={handleRemoveFromCart} onQuantityChange={handleQuantityChange} onCheckout={handleOpenCheckout} />} />
+        <Route path="/checkout" element={<CheckoutPage cart={cart} token={token} />} />
+        <Route path="/order/:orderId" element={<OrderStatusPage />} />
+        <Route path="/address" element={<AddressPage />} />
+        {/* TODO: Add more routes as needed */}
+      </Routes>
     </>
   );
 }

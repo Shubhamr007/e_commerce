@@ -138,5 +138,27 @@ app.post('/change-password', auth(), async (req, res) => {
   }
 });
 
+// Get user address
+app.get('/me/address', auth(), async (req, res) => {
+  const user = await prisma.user.findUnique({ where: { id: req.user.userId } });
+  if (!user) return res.status(404).json({ error: 'User not found' });
+  res.json({ address: user.address, location: user.location });
+});
+
+// Update user address
+app.post('/me/address', auth(), async (req, res) => {
+  const { address, location } = req.body;
+  if (!address) return res.status(400).json({ error: 'Address is required' });
+  try {
+    const user = await prisma.user.update({
+      where: { id: req.user.userId },
+      data: { address, location },
+    });
+    res.json({ address: user.address, location: user.location });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 const PORT = process.env.PORT || 4004;
 app.listen(PORT, () => console.log(`User service running on port ${PORT}`));

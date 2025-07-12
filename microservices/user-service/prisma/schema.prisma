@@ -14,6 +14,8 @@ model User {
   name      String
   role      Role     @default(BUYER)
   status    SellerStatus? @default(PENDING) // Only relevant for SELLERs
+  address   String?  // New: shipping address
+  location  Json?    // New: { lat, lng } or similar
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }

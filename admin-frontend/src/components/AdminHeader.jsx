@@ -3,6 +3,7 @@ import { AppBar, Toolbar, Typography, Box, Avatar, IconButton, InputBase, Button
 import SearchIcon from '@mui/icons-material/Search';
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import LogoutIcon from '@mui/icons-material/Logout';
+import AdminNotifications from './AdminNotifications';
 
 export default function AdminHeader({ adminName, onSearch, logoUrl, onLogout, lastLogin }) {
   return (
@@ -19,6 +20,7 @@ export default function AdminHeader({ adminName, onSearch, logoUrl, onLogout, la
           <InputBase placeholder="Search..." onChange={e => onSearch && onSearch(e.target.value)} sx={{ ml: 1, flex: 1 }} />
         </Box>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+          <AdminNotifications />
           <Box textAlign="right">
             <Typography variant="body1" color="text.secondary">{adminName}</Typography>
             {lastLogin && (
